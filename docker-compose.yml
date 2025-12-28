@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  # 1. The Router: OpenTelemetry Collector
+  otel-collector:
+    image: focker.ir/otel/opentelemetry-collector-contrib:latest
+    command: ["--config=/etc/otel-collector-config.yaml"]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4317:4317" # gRPC receiver
+      - "4318:4318" # HTTP receiver
+    depends_on:
+      - jaeger
+      - loki
+      - prometheus
+
+  # 2. The Log Store: Loki
+  loki:
+    image: focker.ir/grafana/loki:latest
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+
+  # 3. Traces: Jaeger
+  jaeger:
+    image: focker.ir/jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+
+  # 4. Metrics: Prometheus
+  prometheus:
+    image: focker.ir/prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    command: --config.file=/etc/prometheus/prometheus.yml
+
+  # 6. Visualization: Grafana
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - loki
+      - prometheus
+      - jaeger
