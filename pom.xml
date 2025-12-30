@@ -101,12 +101,11 @@
                         <agent>${project.build.directory}/opentelemetry-javaagent.jar</agent>
                     </agents>
                     <environmentVariables>
-                        <environmentVariables>
-                            <OTEL_SERVICE_NAME>my-spring-app</OTEL_SERVICE_NAME>
-                            <OTEL_EXPORTER_OTLP_ENDPOINT>http://localhost:4318</OTEL_EXPORTER_OTLP_ENDPOINT>
-                            <OTEL_METRICS_EXPORTER>otlp</OTEL_METRICS_EXPORTER>
-                            <OTEL_LOGS_EXPORTER>otlp</OTEL_LOGS_EXPORTER>
-                        </environmentVariables>
+                        <OTEL_SERVICE_NAME>my-spring-app</OTEL_SERVICE_NAME>
+                        <OTEL_EXPORTER_OTLP_ENDPOINT>http://localhost:4318</OTEL_EXPORTER_OTLP_ENDPOINT>
+                        <OTEL_EXPORTER_OTLP_PROTOCOL>http/protobuf</OTEL_EXPORTER_OTLP_PROTOCOL>
+                        <OTEL_METRICS_EXPORTER>otlp</OTEL_METRICS_EXPORTER>
+                        <OTEL_LOGS_EXPORTER>otlp</OTEL_LOGS_EXPORTER>
                     </environmentVariables>
                 </configuration>
             </plugin>

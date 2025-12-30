@@ -1,4 +1,15 @@
+global:
+  scrape_interval: 2s # Scrape frequently for local dev
+
 scrape_configs:
+  # 1. Scrape Prometheus itself (Default)
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # 2. Scrape the OpenTelemetry Collector (THIS IS MISSING)
   - job_name: 'otel-collector'
     static_configs:
+      # We use the docker service name "otel-collector"
+      # Port 8889 is defined in your collector config as the metrics endpoint
       - targets: ['otel-collector:8889']

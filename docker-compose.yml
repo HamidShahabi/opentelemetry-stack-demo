@@ -32,6 +32,8 @@ services:
     image: focker.ir/prom/prometheus:latest
     ports:
       - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     command: --config.file=/etc/prometheus/prometheus.yml
 
   # 6. Visualization: Grafana
@@ -45,3 +47,18 @@ services:
       - loki
       - prometheus
       - jaeger
+
+  # 7. Database: PostgreSQL
+  postgres:
+    image: focker.ir/postgres:latest
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+volumes:
+  postgres_data:
